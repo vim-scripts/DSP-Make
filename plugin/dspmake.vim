@@ -1,6 +1,6 @@
 " Title: Set Makeprg for VCC project
 " Author: Michael Geddes<michaelrgeddes at optushome.com.au> 
-" Version: 0.1
+" Version: 0.3
 " Type: General Plugin
 
 if has("menu")
@@ -14,6 +14,9 @@ fun! s:SetVCCMake()
 
   if isdirectory(@%)
   	let where=fnamemodify(@%,':p:.')
+	if where !~ '[/\\]$' && where != '' 
+		let where=where.'/'
+	endif
   else
 	let where=fnamemodify(@%,':p:.:h').'/'
   endif
@@ -23,6 +26,9 @@ fun! s:SetVCCMake()
 		let dsp_file=dsp_file."\n"
 	endif
 	let dsp_file=dsp_file.dsp_file2
+  endif
+  if dsp_file == ''
+	return
   endif
 
   if dsp_file =~ "\n"
@@ -34,7 +40,7 @@ fun! s:SetVCCMake()
 	echo '*'.dsp_file.'*'
   endif
 "  let choices = 'grep '
-  let choices = system('grep ^^!MESSAGE.*(based.on '.dsp_file.'')
+  let choices = system('grep ^^!MESSAGE.*(based.on "'.dsp_file.'"')
   let my='!MESSAGE\s\+"\([^"]*\)"'."[^\n]*\n"
   let choices=substitute(choices,my,"\\1\n",'g')
 	
@@ -44,7 +50,7 @@ fun! s:SetVCCMake()
   endif
   let dsp_target=substitute("\n".choices,'^\('."[^\r\n]*\n".'\)\{'.index."}\\([^\r\n]*\\).\\{-}$" ,'\2','')
 
-  let &makeprg='msdev '.dsp_file.' /make "'.dsp_target.'"'
+  let &makeprg='msdev "'.dsp_file.'" /make "'.dsp_target.'"'
 endfun
 
 
