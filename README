@@ -1,0 +1,13 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=203
+
+This is a Vim 6 Plugin that is invoked by menu (Code.Set DSP Make) and a map  <leader>dsp, that sets makeprg to the desired msdev project.
+
+It is useful for those using MSDEV projects and want to make from within VIM, and allows choosing a specific target from within a project.
+
+It scans the current directory, and the directory of the current file, and presents a dialog with a choice of all the dsp projects present (assuming there is more than one) and when you choose one, displays a choice of the targets available in that DSP.
+'makeprg' is then modified to build that target within the desired project.
+
+Now type :make to make the project!
+
+(It does rely on &grepprg being set to a valid program -either grep or findstr work fine).
+
